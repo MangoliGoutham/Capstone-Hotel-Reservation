@@ -1,0 +1,211 @@
+/* --- Admin Layout Structure --- */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--color-bg-body);
+}
+
+/* --- Modern Sidebar --- */
+.sidebar {
+    background: var(--color-bg-surface);
+    border-right: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    /* Above content */
+}
+
+/* Sidebar Branding */
+.sidebar-header {
+    height: 72px;
+    /* Match Topbar */
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--color-divider);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+.sidebar-header span {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-active));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Navigation Links */
+.mat-nav-list {
+    padding-top: 1rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-bottom: 2rem;
+}
+
+.nav-item {
+    margin: 0 0.75rem;
+    border-radius: var(--radius-md) !important;
+    color: var(--color-text-muted);
+    font-size: 0.9rem !important;
+    font-weight: 500;
+    height: 48px;
+    /* Consistent height */
+    transition: all var(--transition-fast) !important;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem !important;
+}
+
+.nav-item:hover {
+    background: var(--color-bg-subtle);
+    color: var(--color-primary);
+    transform: translateX(2px);
+}
+
+.nav-item.active {
+    background: var(--color-primary-faint);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.nav-item .icon {
+    margin-right: 1rem;
+    color: inherit;
+    font-size: 1.25rem;
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
+}
+
+.nav-spacer {
+    flex: 1;
+}
+
+.nav-item.logout {
+    margin-top: 2rem;
+    border-top: 1px solid var(--color-divider);
+    border-radius: 0 !important;
+    margin: 2rem 0 0 0;
+    padding: 1rem 1.5rem !important;
+}
+
+.nav-item.logout:hover {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+}
+
+/* Desktop: Fixed width */
+@media (min-width: 960px) {
+    .sidebar {
+        width: 260px !important;
+        min-width: 260px;
+    }
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--color-bg-body);
+}
+
+.top-bar {
+    height: 72px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.top-bar h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-main);
+}
+
+.content-area {
+    padding: 2rem;
+    flex: 1;
+    overflow-y: auto;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .content-area {
+        padding: 1rem;
+    }
+
+    .top-bar {
+        padding: 0 1rem;
+    }
+}
+
+/* --- User Profile (Refined) --- */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 1rem 0.35rem 0.35rem;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.user-profile:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    background: var(--color-primary-faint);
+    color: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-profile .name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+}
+
+.user-profile .role {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}

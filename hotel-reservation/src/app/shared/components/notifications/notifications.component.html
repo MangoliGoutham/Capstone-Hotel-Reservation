@@ -1,0 +1,38 @@
+<div class="notification-wrapper" (clickOutside)="isOpen = false">
+    <button class="notification-btn" (click)="toggleDropdown()">
+        <span class="bell-icon">🔔</span>
+        <span class="badge" *ngIf="(unreadCount$ | async) as count" [class.visible]="count > 0">
+            {{ count }}
+        </span>
+    </button>
+
+    <div class="notification-dropdown" *ngIf="isOpen" [class.glass-effect]="true">
+        <div class="dropdown-header">
+            <h3>Notifications</h3>
+            <!-- <button class="mark-all-btn" (click)="markAllAsRead()">Mark all as read</button> -->
+        </div>
+
+        <div class="notification-list" *ngIf="(notifications$ | async) as notifications">
+            <div *ngIf="notifications.length === 0" class="empty-state">
+                <p>No new notifications</p>
+            </div>
+
+            <div class="notification-item" *ngFor="let notification of notifications"
+                [class.unread]="!notification.isRead" (click)="markAsRead(notification)">
+                <div class="icon-container">
+                    <span *ngIf="notification.type === 'Booking'">📅</span>
+                    <span *ngIf="notification.type === 'CheckIn'">🏨</span>
+                    <span *ngIf="notification.type === 'CheckOut'">👋</span>
+                    <span *ngIf="notification.type === 'Billing'">🧾</span>
+                    <span *ngIf="notification.type === 'Payment'">💰</span>
+                    <span *ngIf="notification.type === 'General'">ℹ️</span>
+                </div>
+                <div class="content">
+                    <p class="message">{{ notification.message }}</p>
+                    <span class="time">{{ notification.createdAt | date:'short' }}</span>
+                </div>
+                <!-- <div class="status-dot"></div> -->
+            </div>
+        </div>
+    </div>
+</div>

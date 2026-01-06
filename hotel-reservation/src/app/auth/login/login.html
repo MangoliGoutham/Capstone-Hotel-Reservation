@@ -1,0 +1,38 @@
+<div class="auth-container animate-fade-in">
+  <mat-card class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-brand">Hotel Reservation System</h1>
+      <h3 class="text-muted mb-2">Welcome Back</h3>
+      <p class="text-muted">Sign in to continue to your account</p>
+    </div>
+
+    <mat-card-content>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>Email Address</mat-label>
+          <input matInput type="email" name="email" [(ngModel)]="credentials.email" required email
+            placeholder="Ex. user@example.com">
+          <mat-icon matSuffix class="text-muted">email</mat-icon>
+          <mat-error *ngIf="loginForm.controls['email']?.invalid">Please enter a valid email</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" name="password" [(ngModel)]="credentials.password" required>
+          <mat-icon matSuffix class="text-muted">lock</mat-icon>
+          <mat-error *ngIf="loginForm.controls['password']?.invalid">Password is required</mat-error>
+        </mat-form-field>
+
+        <button mat-flat-button class="btn-gradient w-100 p-2" type="submit"
+          [disabled]="!loginForm.form.valid || isLoading">
+          {{ isLoading ? 'Signing In...' : 'Sign In' }}
+        </button>
+      </form>
+    </mat-card-content>
+
+    <div class="auth-footer">
+      <p class="text-muted">Don't have an account? <a routerLink="/auth/register" class="link">Sign up</a></p>
+    </div>
+  </mat-card>
+</div>

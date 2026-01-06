@@ -1,0 +1,56 @@
+<div class="page-header">
+    <h2>{{ isEditMode ? 'Edit Room' : 'New Room' }}</h2>
+</div>
+
+<div class="card form-card">
+    <form (ngSubmit)="onSubmit()" #roomForm="ngForm">
+        <div class="row">
+            <div class="form-group mb-2 col">
+                <label for="hotelId">Hotel</label>
+                <select id="hotelId" name="hotelId" [(ngModel)]="room.hotelId" required class="form-control">
+                    <option [ngValue]="0" disabled>Select Hotel</option>
+                    <option *ngFor="let hotel of hotels" [ngValue]="hotel.id">{{ hotel.name }}</option>
+                </select>
+            </div>
+            <div class="form-group mb-2 col">
+                <label for="roomNumber">Room Number</label>
+                <input type="text" id="roomNumber" name="roomNumber" [(ngModel)]="room.roomNumber" required
+                    class="form-control" placeholder="e.g. 101">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group mb-2 col">
+                <label for="roomType">Room Type</label>
+                <select id="roomType" name="roomType" [(ngModel)]="room.roomType" required class="form-control">
+                    <option *ngFor="let type of roomTypes" [ngValue]="type">{{ type }}</option>
+                </select>
+            </div>
+            <div class="form-group mb-2 col">
+                <label for="capacity">Capacity (Guests)</label>
+                <input type="number" id="capacity" name="capacity" [(ngModel)]="room.capacity" required min="1"
+                    class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group mb-2">
+            <label for="basePrice">Base Price ($)</label>
+            <input type="number" id="basePrice" name="basePrice" [(ngModel)]="room.basePrice" required min="0"
+                class="form-control">
+        </div>
+
+        <div class="form-group mb-4">
+            <label for="description">Description (Optional)</label>
+            <textarea id="description" name="description" [(ngModel)]="room.description" rows="3"
+                class="form-control"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" routerLink="/admin/rooms" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary"
+                [disabled]="!roomForm.form.valid || isLoading || room.hotelId === 0">
+                {{ isEditMode ? 'Update Room' : 'Create Room' }}
+            </button>
+        </div>
+    </form>
+</div>

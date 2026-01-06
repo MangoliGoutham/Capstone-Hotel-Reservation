@@ -1,0 +1,84 @@
+<div class="reports-dashboard">
+    <div class="page-header">
+        <h2>System Reports</h2>
+        <p>Overview of hotel performance and metrics</p>
+    </div>
+
+    <!-- Occupancy Card -->
+    <div class="report-card occupancy-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <mat-icon>meeting_room</mat-icon>
+                Occupancy Rate
+            </h3>
+        </div>
+
+        <div class="date-control">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Select Date</mat-label>
+                <input matInput [matDatepicker]="occupancyPicker" [(ngModel)]="occupancyDate"
+                    (dateChange)="loadOccupancy()">
+                <mat-datepicker-toggle matIconSuffix [for]="occupancyPicker"></mat-datepicker-toggle>
+                <mat-datepicker #occupancyPicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="occupancyData" class="metric-display">
+            <div class="big-number">{{ occupancyData.occupancyRate | percent:'1.0-1' }}</div>
+            <p class="sub-text">
+                <strong>{{ occupancyData.occupiedRooms }}</strong> occupied out of
+                <strong>{{ occupancyData.totalRooms }}</strong> rooms
+            </p>
+        </div>
+
+        <div *ngIf="!occupancyData" class="metric-display">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+    </div>
+
+    <!-- Revenue Card -->
+    <div class="report-card revenue-card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <mat-icon>payments</mat-icon>
+                Revenue Analysis
+            </h3>
+        </div>
+
+        <div class="revenue-controls">
+            <mat-form-field appearance="outline">
+                <mat-label>Start Date</mat-label>
+                <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate">
+                <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>End Date</mat-label>
+                <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate">
+                <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" (click)="loadRevenue()">
+                <mat-icon>refresh</mat-icon>
+                Generate
+            </button>
+        </div>
+
+        <div *ngIf="revenueData" class="revenue-grid">
+            <div class="revenue-item">
+                <h6>Total Revenue</h6>
+                <h3 class="success">{{ revenueData.totalRevenue | currency }}</h3>
+            </div>
+            <div class="revenue-item">
+                <h6>Room Charges</h6>
+                <h3>{{ revenueData.roomRevenue | currency }}</h3>
+            </div>
+            <div class="revenue-item">
+                <h6>Services & Taxes</h6>
+                <h3>{{ revenueData.otherRevenue | currency }}</h3>
+            </div>
+        </div>
+    </div>
+</div>

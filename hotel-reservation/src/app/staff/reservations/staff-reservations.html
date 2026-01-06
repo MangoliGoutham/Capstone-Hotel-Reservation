@@ -1,0 +1,125 @@
+<div class="reservations-container">
+    <div class="page-header">
+        <div class="header-content">
+            <h2>Reservations Management</h2>
+            <p class="subtitle">Manage bookings, check-ins, and check-outs.</p>
+        </div>
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search Guest Name or Reservation ID..." [(ngModel)]="searchTerm"
+                (input)="filterReservations()">
+        </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading reservations data...</p>
+    </div>
+
+    <div class="table-card" *ngIf="!isLoading">
+        <div class="table-responsive">
+            <table class="elegant-table">
+                <thead>
+                    <tr>
+                        <th width="120" (click)="sort('reservationNumber')" class="sortable">
+                            Res #
+                            <span *ngIf="sortColumn === 'reservationNumber'">{{ sortDirection === 'asc' ? '↑' : '↓'
+                                }}</span>
+                        </th>
+                        <th (click)="sort('userName')" class="sortable">
+                            Guest Details
+                            <span *ngIf="sortColumn === 'userName'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                        </th>
+                        <th (click)="sort('roomNumber')" class="sortable">
+                            Room
+                            <span *ngIf="sortColumn === 'roomNumber'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                        </th>
+                        <th (click)="sort('checkInDate')" class="sortable">
+                            Stay Period
+                            <span *ngIf="sortColumn === 'checkInDate'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                        </th>
+                        <th (click)="sort('status')" class="sortable">
+                            Status
+                            <span *ngIf="sortColumn === 'status'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                        </th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let res of filteredReservations">
+                        <td>
+                            <span class="res-id">#{{ res.reservationNumber }}</span>
+                        </td>
+                        <td>
+                            <div class="guest-info">
+                                <span class="guest-name">{{ res.userName }}</span>
+                                <span class="guest-details">{{ res.numberOfGuests }} Guest(s)</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="room-info">
+                                <span class="room-number">Room {{ res.roomNumber }}</span>
+                                <span class="hotel-name">{{ res.hotelName }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="stay-info">
+                                <div><span class="label">In:</span> {{ res.checkInDate | date:'MMM d' }}</div>
+                                <div><span class="label">Out:</span> {{ res.checkOutDate | date:'MMM d' }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-container">
+                                <span class="status-badge" [ngClass]="{
+                                    'status-confirmed': res.status === 'Confirmed',
+                                    'status-pending': res.status === 'Pending',
+                                    'status-paid': res.status === 'Paid',
+                                    'status-checkedin': res.status === 'CheckedIn' || res.status === 'Checked-in',
+                                    'status-checkedout': res.status === 'CheckedOut' || res.status === 'Checked-out',
+                                    'status-booked': res.status === 'Booked',
+                                    'status-cancelled': res.status === 'Cancelled'
+                                }">{{ res.status }}</span>
+                                <span *ngIf="res.status === 'Checked-out' || res.status === 'CheckedOut'"
+                                    class="bill-badge">
+                                    Bill Ready
+                                </span>
+                            </div>
+                        </td>
+                        <td class="text-end">
+                            <div class="action-buttons">
+                                <button *ngIf="res.status === 'Pending' && (userRole === 'HotelManager')"
+                                    class="btn-icon btn-confirm" title="Confirm Reservation"
+                                    (click)="updateStatus(res, 'Confirmed')">
+                                    ✅
+                                </button>
+                                <button
+                                    *ngIf="(res.status === 'Confirmed' || res.status === 'Paid') && (userRole === 'Receptionist')"
+                                    class="btn-icon btn-checkin" title="Check In"
+                                    (click)="updateStatus(res, 'Checked-in')">
+                                    📥
+                                </button>
+                                <button
+                                    *ngIf="(res.status === 'CheckedIn' || res.status === 'Checked-in') && (userRole === 'Receptionist')"
+                                    class="btn-icon btn-checkout" title="Check Out"
+                                    (click)="updateStatus(res, 'Checked-out')">
+                                    📤
+                                </button>
+                                <button
+                                    *ngIf="(res.status === 'Booked' || res.status === 'Confirmed' || res.status === 'Pending') && (userRole === 'HotelManager' || userRole === 'Receptionist')"
+                                    class="btn-icon btn-cancel" title="Cancel" (click)="updateStatus(res, 'Cancelled')">
+                                    ❌
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="filteredReservations.length === 0" class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h3>No Reservations Found</h3>
+            <p>Try adjusting your search terms.</p>
+        </div>
+    </div>
+</div>

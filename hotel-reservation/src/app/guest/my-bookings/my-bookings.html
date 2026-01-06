@@ -1,0 +1,116 @@
+<div class="bookings-container container py-5">
+    <div class="page-header mb-5">
+        <h1>My Bookings</h1>
+        <p class="text-muted">Manage your upcoming and past stays.</p>
+
+
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state text-center py-5">
+        <div class="spinner"></div>
+        <p>Loading your reservations...</p>
+    </div>
+
+    <div *ngIf="!isLoading && reservations.length === 0" class="empty-state text-center py-5 card">
+        <div class="empty-icon">📅</div>
+        <h3>No bookings yet</h3>
+        <p>You haven't made any reservations. Time for a vacation?</p>
+        <button class="btn btn-primary mt-3" routerLink="/">Find a Hotel</button>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="filter-card glass-card p-4 mb-4" *ngIf="!isLoading">
+        <form [formGroup]="searchForm" class="filter-form">
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search Hotel or ID</mat-label>
+                <mat-icon matPrefix class="text-muted">search</mat-icon>
+                <input matInput formControlName="searchTerm" placeholder="e.g. Taj Mahal">
+            </mat-form-field>
+
+
+        </form>
+    </div>
+
+    <!-- Empty State for Filters -->
+    <div *ngIf="!isLoading && pagedReservations.length === 0 && reservations.length > 0"
+        class="empty-state text-center py-5">
+        <div class="empty-icon">🔍</div>
+        <h3>No matching bookings</h3>
+        <p>Try adjusting your filters.</p>
+    </div>
+
+    <div class="reservations-list" *ngIf="!isLoading && pagedReservations.length > 0">
+        <div class="card booking-card mb-4 animate-fade-in" *ngFor="let res of pagedReservations">
+            <div class="card-body">
+                <div class="booking-header">
+                    <div>
+                        <h4 class="hotel-name">{{ res.hotelName }}</h4>
+                        <span class="booking-id">Reservation #{{ res.reservationNumber }}</span>
+                    </div>
+                    <div class="booking-status">
+                        <span class="status-badge" [ngClass]="{
+                            'status-confirmed': res.status === 'Confirmed',
+                            'status-pending': res.status === 'Pending',
+                            'status-cancelled': res.status === 'Cancelled',
+                            'status-checkedin': res.status === 'CheckedIn',
+                            'status-checkedout': res.status === 'CheckedOut'
+                        }">{{ res.status }}</span>
+                    </div>
+                </div>
+
+                <div class="booking-details my-4">
+                    <div class="detail-item">
+                        <span class="label">Check-in</span>
+                        <span class="value">{{ res.checkInDate | date:'mediumDate' }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Check-out</span>
+                        <span class="value">{{ res.checkOutDate | date:'mediumDate' }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Room Number</span>
+                        <span class="value">{{ res.roomNumber }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Guests</span>
+                        <span class="value">{{ res.numberOfGuests }} Adults</span>
+                    </div>
+                    <div class="detail-item price">
+                        <span class="label">Total Price</span>
+                        <span class="value">{{ res.totalAmount | currency }}</span>
+                    </div>
+                </div>
+
+                <div class="booking-actions">
+                    <button mat-stroked-button color="warn" class="btn-sm" *ngIf="canCancel(res)"
+                        (click)="cancelReservation(res.id)" [disabled]="isCancelling === res.id">
+                        {{ isCancelling === res.id ? 'Cancelling...' : 'Cancel Reservation' }}
+                    </button>
+                    <!-- Simulated Invoice Download -->
+                    <button mat-stroked-button class="btn-sm text-muted" (click)="downloadInvoice(res)">
+                        <mat-icon inline>description</mat-icon> Invoice
+                    </button>
+                    <!-- Bill Payment Button -->
+                    <button mat-flat-button color="primary" class="btn-sm"
+                        *ngIf="bills[res.id] && bills[res.id].paymentStatus === 'Pending'"
+                        (click)="initiatePayment(bills[res.id])">
+                        <mat-icon inline>payment</mat-icon> Pay Bill
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <mat-paginator *ngIf="!isLoading && reservations.length > 0" [length]="filteredReservations.length"
+        [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)" class="glass-card mb-5">
+    </mat-paginator>
+
+    <!-- Payment Modal -->
+    <div class="modal-backdrop" *ngIf="showPaymentModal" (click)="showPaymentModal = false"></div>
+    <div class="payment-modal-wrapper" *ngIf="showPaymentModal">
+        <app-payment [amount]="selectedBill!.totalAmount" (paymentComplete)="processPayment()"
+            (cancel)="showPaymentModal = false">
+        </app-payment>
+    </div>
+</div>

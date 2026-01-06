@@ -1,0 +1,253 @@
+/* Staff Reservations Styles */
+.reservations-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.header-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    color: var(--color-text-muted);
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+    width: 320px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+    font-size: 1rem;
+}
+
+.search-box input {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border-radius: 50px;
+    color: var(--color-text-main);
+    font-size: 0.95rem;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-faint);
+}
+
+/* Table Card - Handled by global .card or manual override if needed */
+.table-card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Cell Contents */
+.res-id {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: var(--color-primary-faint);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.guest-info,
+.room-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.guest-name,
+.room-number {
+    font-weight: 600;
+    color: var(--color-text-main);
+}
+
+.guest-details,
+.hotel-name {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.stay-info {
+    font-size: 0.9rem;
+    color: var(--color-text-body);
+}
+
+.stay-info .label {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    width: 30px;
+    display: inline-block;
+    font-weight: 600;
+}
+
+/* Status Badges - Align with Global or Specific Variants */
+.status-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+}
+
+.status-badge {
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+}
+
+.status-confirmed,
+.status-paid {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.status-checkedin {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.status-pending {
+    background: var(--color-bg-subtle);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+}
+
+.status-booked {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+}
+
+.status-cancelled {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+}
+
+.status-checkedout {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.bill-badge {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    background: var(--color-bg-subtle);
+}
+
+/* Actions */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: white;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    font-size: 1rem;
+}
+
+.btn-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-confirm:hover {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.btn-checkin:hover {
+    background: #dcfce7;
+    color: #15803d;
+    border-color: #22c55e;
+}
+
+.btn-checkout:hover {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+    border-color: var(--color-warning);
+}
+
+.btn-cancel:hover {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+/* Empty State */
+.empty-state {
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+    color: var(--color-border);
+}
+
+.loading-state {
+    text-align: center;
+    padding: 4rem;
+    color: var(--color-text-muted);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--color-border);
+    border-radius: 50%;
+    border-top-color: var(--color-primary);
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}

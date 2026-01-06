@@ -1,0 +1,87 @@
+<mat-toolbar color="primary" class="main-header">
+    <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="toggleDrawer()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    <span>Admin Portal</span>
+    <span class="example-spacer" style="flex: 1 1 auto;"></span>
+    <div class="user-profile" *ngIf="currentUser">
+        <div class="avatar">{{ currentUser.firstName | slice:0:1 | uppercase }}</div>
+        <div class="user-info">
+            <span class="name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+            <span class="role">{{ currentUser.role }}</span>
+        </div>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="admin-container">
+    <mat-sidenav #drawer class="sidebar" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false"
+        [fixedInViewport]="(isHandset$ | async) === true" [fixedTopGap]="(isHandset$ | async) ? 56 : 0">
+        <mat-toolbar color="primary" *ngIf="false">
+          
+        </mat-toolbar>
+        <!-- Sidebar Header/Brand -->
+        <div class="sidebar-header"
+            style="height: 64px; display: flex; align-items: center; padding-left: 16px; font-weight: bold; border-bottom: 1px solid rgba(0,0,0,0.1);">
+            <span>{{ currentUser?.role }} Portal</span>
+        </div>
+
+        <mat-nav-list>
+            <!-- Only Admin sees Dashboard -->
+            <a *ngIf="isAdmin" routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item"
+                (click)="onLinkClick(drawer)">
+                <mat-icon class="icon">dashboard</mat-icon>
+                <span>Dashboard</span>
+            </a>
+            <!-- Only Admin sees Manage Hotels -->
+            <a *ngIf="isAdmin" routerLink="/admin/hotels" routerLinkActive="active" class="nav-item"
+                (click)="onLinkClick(drawer)">
+                <mat-icon class="icon">hotel</mat-icon>
+                <span>Manage Hotels</span>
+            </a>
+            <!-- Everyone (Admin + HotelManager) sees Manage Rooms -->
+            <a routerLink="/admin/rooms" routerLinkActive="active" class="nav-item" (click)="onLinkClick(drawer)">
+                <mat-icon class="icon">bedroom_parent</mat-icon>
+                <span>Manage Rooms</span>
+            </a>
+            <!-- Everyone (Admin + HotelManager) sees Staff Management -->
+            <a routerLink="/admin/staff" routerLinkActive="active" class="nav-item" (click)="onLinkClick(drawer)">
+                <mat-icon class="icon">groups</mat-icon>
+                <span>Manage Staff</span>
+            </a>
+
+            <!-- Visible to Admin and Manager -->
+            <a *ngIf="isAdmin || isManager" routerLink="/staff/reservations" routerLinkActive="active" class="nav-item"
+                (click)="onLinkClick(drawer)">
+                <mat-icon class="icon">calendar_today</mat-icon>
+                <span>Reservations</span>
+            </a>
+
+
+            <!-- Only Admin sees User Management -->
+            <a *ngIf="isAdmin" routerLink="/admin/users" routerLinkActive="active" class="nav-item"
+                (click)="onLinkClick(drawer)">
+                <mat-icon class="icon">people</mat-icon>
+                <span>Manage Users</span>
+            </a>
+            <!-- Only Admin sees Reports -->
+
+
+            <div class="nav-spacer"></div>
+
+            <a (click)="authService.logout()" class="nav-item logout" style="cursor: pointer;">
+                <mat-icon class="icon">logout</mat-icon>
+                <span>Logout</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <!-- Toolbar removed from here -->
+
+        <div class="content-area p-3">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

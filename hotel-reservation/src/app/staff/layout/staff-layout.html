@@ -1,0 +1,82 @@
+<div class="staff-root" *ngIf="authService.currentUser$ | async as user; else loading">
+    <header class="top-bar">
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="toggleDrawer()"
+            *ngIf="isHandset$ | async">
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <h1>Staff Dashboard</h1>
+        <div class="user-profile">
+            <span class="avatar">{{ user.firstName | slice:0:1 }}</span>
+            <span class="name">{{ user.firstName }} {{ user.lastName }}</span>
+            <span class="role-badge">{{ user.role }}</span>
+        </div>
+    </header>
+
+    <mat-sidenav-container class="staff-container">
+        <mat-sidenav #drawer class="sidebar" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+            [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false"
+            [fixedInViewport]="(isHandset$ | async) === true" [fixedTopGap]="(isHandset$ | async) ? 72 : 0">
+
+            <div class="brand"
+                style="height: 72px; display: flex; align-items: center; border-bottom: 1px solid var(--glass-border);">
+                <h2 style="margin:0; font-size: 1.2rem;">{{ user.role }} Portal</h2>
+            </div>
+
+            <nav class="nav-links">
+                <a routerLink="/staff/dashboard" routerLinkActive="active" class="nav-item"
+                    (click)="onLinkClick(drawer)">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Hotel Manager & Admin Extras -->
+                <ng-container *ngIf="['Admin', 'HotelManager'].includes(user.role)">
+                    <div class="nav-section-label">Management</div>
+                    <a routerLink="/admin/hotels" class="nav-item" routerLinkActive="active"
+                        (click)="onLinkClick(drawer)">
+                        <span class="icon">🏨</span>
+                        <span>Hotels</span>
+                    </a>
+                    <a routerLink="/admin/rooms" class="nav-item" routerLinkActive="active"
+                        (click)="onLinkClick(drawer)">
+                        <span class="icon">🛏️</span>
+                        <span>Rooms</span>
+                    </a>
+
+                    <a *ngIf="['HotelManager'].includes(user.role)" routerLink="/staff/reports" class="nav-item"
+                        routerLinkActive="active" (click)="onLinkClick(drawer)">
+                        <span class="icon">📊</span>
+                        <span>Reports</span>
+                    </a>
+                </ng-container>
+
+                <div class="nav-section-label">Operations</div>
+                <a routerLink="/staff/reservations" routerLinkActive="active" class="nav-item"
+                    (click)="onLinkClick(drawer)">
+                    <span class="icon">📅</span>
+                    <span>Reservations</span>
+                </a>
+
+                <div class="nav-spacer"></div>
+
+                <a (click)="authService.logout()" class="nav-item logout" style="cursor: pointer;">
+                    <span class="icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <div class="content-area">
+                <router-outlet></router-outlet>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+<ng-template #loading>
+    <div class="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading Staff Portal...</p>
+    </div>
+</ng-template>

@@ -1,0 +1,64 @@
+<div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content text-center">
+        <h1 class="hero-title animate-fade-in text-gradient">Find Your Perfect Stay</h1>
+        <p class="hero-subtitle animate-fade-in" style="animation-delay: 0.1s;">Discover luxury hotels and resorts
+            worldwide</p>
+
+        <div class="search-box glass-card animate-fade-in" style="animation-delay: 0.2s;">
+            <form (ngSubmit)="search()" class="search-form">
+                <mat-form-field appearance="outline" class="w-100 search-field">
+                    <mat-label>Where do you want to go?</mat-label>
+                    <mat-icon matPrefix class="text-muted">location_on</mat-icon>
+                    <input matInput type="text" [(ngModel)]="searchCity" name="city" placeholder="e.g., Paris, Tokyo">
+                </mat-form-field>
+                <button mat-flat-button class="btn-gradient search-btn" type="submit">
+                    <mat-icon>search</mat-icon> Search
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="section-header text-center mb-5">
+        <h2>Featured Hotels</h2>
+        <div class="divider mx-auto"></div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state text-center">
+        <mat-spinner diameter="50" class="mx-auto"></mat-spinner>
+        <p class="mt-3 text-muted">Finding the best spots for you...</p>
+    </div>
+
+    <div *ngIf="!isLoading && hotels.length === 0" class="empty-state text-center glass-card p-4 mx-auto"
+        style="max-width: 500px;">
+        <mat-icon style="font-size: 48px; height: 48px; width: 48px;" class="text-muted mb-3">hotel</mat-icon>
+        <h3>No hotels found</h3>
+        <p class="text-muted">Try searching for a different destination.</p>
+    </div>
+
+    <div class="hotel-grid" *ngIf="!isLoading">
+        <mat-card class="hotel-card h-100 animate-fade-in" *ngFor="let hotel of hotels">
+            <div class="card-img-placeholder">
+                <mat-icon>apartment</mat-icon>
+            </div>
+            <div class="hotel-rating">
+                <mat-icon inline>star</mat-icon> {{ hotel.starRating }}
+            </div>
+
+            <mat-card-content class="card-body">
+                <h3 class="card-title">{{ hotel.name }}</h3>
+                <p class="card-location">
+                    <mat-icon inline>location_on</mat-icon> {{ hotel.city }}, {{ hotel.country }}
+                </p>
+                <p class="card-description">{{ hotel.description || 'Experience luxury and comfort in the heart of the
+                    city.' }}</p>
+            </mat-card-content>
+
+            <mat-card-actions align="end" class="p-3">
+                <a mat-flat-button color="primary" [routerLink]="['/hotels', hotel.id]">View Details</a>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

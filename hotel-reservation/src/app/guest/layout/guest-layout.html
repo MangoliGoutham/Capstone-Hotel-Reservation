@@ -1,0 +1,41 @@
+<div class="guest-container">
+    <header class="guest-header">
+        <div class="container header-content">
+            <a routerLink="/" class="logo">TAJ HOTELS</a>
+            <nav class="guest-nav">
+                <a routerLink="/" class="nav-link">Home</a>
+                <ng-container *ngIf="authService.currentUser$ | async as user; else loginLink">
+                    <a routerLink="/my-bookings" class="nav-link">My Bookings</a>
+
+                    <!-- Notifications -->
+                    <app-notifications></app-notifications>
+
+                    <!-- User Menu / Welcome -->
+                    <div class="user-menu">
+                        <span class="user-welcome">Hi, {{ user.firstName }}</span>
+                        <div class="divider"></div>
+                        <button (click)="logout()" class="btn-logout">Logout</button>
+                    </div>
+                </ng-container>
+                <ng-template #loginLink>
+                    <a routerLink="/auth/login" class="btn btn-primary btn-sm btn-signin">Sign In</a>
+                </ng-template>
+            </nav>
+        </div>
+    </header>
+    <main class="guest-content">
+        <router-outlet></router-outlet>
+    </main>
+    <footer class="guest-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">Taj Hotels</div>
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <p class="copyright">&copy; 2024 Taj Hotels. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
