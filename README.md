@@ -59,14 +59,14 @@ The application uses Entity Framework Core Code-First approach.
    Application will be available at `http://localhost:4200`.
 
 ## Usage & Login Credentials
-The system comes pre-seeded with the following users (Password for all: `Password123!`):
 
-| Role | Email | Features |
+| Role | Email | Password |
 |------|-------|----------|
-| **Admin** | `admin@hotel.com` | Manage Hotels, Rooms, Users, Reports |
-| **Hotel Manager** | `manager@hotel.com` | Manage Room Status, Pricing |
-| **Receptionist** | `receptionist@hotel.com` | Check-in, Check-out, Billing |
-| **Guest** | `guest@hotel.com` | Search Rooms, My Bookings, Payment |
+| **Admin** | `admin@hotel.com` | `admin123` |
+| **Hotel Manager** | `manager@hotel.com` | `manager123` |
+| **Receptionist** | `receptionist@hotel.com` | `receptionist123` |
+| **Guest** | `virat@gmail.com` | `virat@123` |
+
 
 ## Features Implemented
 - **User Management**: Registration, Login, Role-based Routing.
