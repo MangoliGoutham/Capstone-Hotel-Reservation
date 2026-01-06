@@ -16,6 +16,7 @@ export interface AuthResponseDto {
   role: string;
   firstName: string;
   lastName: string;
+  hotelId?: number;
 }
 
 export interface User {
@@ -23,4 +24,5 @@ export interface User {
   lastName: string;
   email: string;
   role: string;
+  hotelId?: number;
 }

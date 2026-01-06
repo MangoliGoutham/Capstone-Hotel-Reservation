@@ -6,7 +6,7 @@
             </div>
             <div class="stat-content">
                 <h3>Today's Arrivals</h3>
-                <div class="value">12</div>
+                <div class="value">{{ isLoading ? '...' : stats.todayArrivals }}</div>
                 <p class="subtitle">Guests checking in today</p>
             </div>
         </div>
@@ -17,7 +17,7 @@
             </div>
             <div class="stat-content">
                 <h3>Today's Departures</h3>
-                <div class="value">8</div>
+                <div class="value">{{ isLoading ? '...' : stats.todayDepartures }}</div>
                 <p class="subtitle">Guests checking out today</p>
             </div>
         </div>
@@ -28,59 +28,31 @@
             </div>
             <div class="stat-content">
                 <h3>Pending Requests</h3>
-                <div class="value">3</div>
+                <div class="value">{{ isLoading ? '...' : stats.pendingRequests }}</div>
                 <p class="subtitle">Special requests needing attention</p>
             </div>
         </div>
     </div>
 
     <div class="content-row">
-        <div class="card alerts-card">
+        <!-- Charts Section (Replaces Alerts) -->
+        <div class="card charts-card">
             <div class="card-header">
-                <h3>Recent Alerts & Notifications</h3>
-                <button class="btn-icon">🔄</button>
+                <h3>Hotel Analytics</h3>
+                <button class="btn-icon" (click)="loadDashboardData()">🔄</button>
             </div>
-            <div class="card-body">
-                <ul class="alerts-list">
-                    <li class="alert-item high-priority">
-                        <div class="alert-icon">⚠️</div>
-                        <div class="alert-details">
-                            <span class="alert-title">Maintenance Required</span>
-                            <span class="alert-desc">Room 302 reported AC issue.</span>
-                        </div>
-                        <span class="alert-time">10m ago</span>
-                    </li>
-                    <li class="alert-item info">
-                        <div class="alert-icon">ℹ️</div>
-                        <div class="alert-details">
-                            <span class="alert-title">Housekeeping</span>
-                            <span class="alert-desc">Room 105 requested cleaning.</span>
-                        </div>
-                        <span class="alert-time">35m ago</span>
-                    </li>
-                    <li class="alert-item success">
-                        <div class="alert-icon">✅</div>
-                        <div class="alert-details">
-                            <span class="alert-title">VIP Arrival</span>
-                            <span class="alert-desc">Mr. Smith checking in at 5 PM.</span>
-                        </div>
-                        <span class="alert-time">1h ago</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Placeholder for future quick actions or charts -->
-        <div class="card quick-actions-card">
-            <div class="card-header">
-                <h3>Quick Actions</h3>
-            </div>
-            <div class="card-body">
-                <div class="action-buttons">
-                    <button class="btn btn-primary w-100 mb-2">Create New Reservation</button>
-                    <button class="btn btn-outline-secondary w-100">Check Room Availability</button>
+            <div class="card-body charts-grid">
+                <div class="chart-container">
+                    <canvas baseChart [data]="pieChartData" [options]="pieChartOptions" [type]="pieChartType">
+                    </canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="barChartType">
+                    </canvas>
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>

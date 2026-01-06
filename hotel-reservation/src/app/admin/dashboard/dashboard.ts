@@ -23,6 +23,8 @@ export class DashboardComponent implements OnInit {
     recentReservations: Reservation[] = [];
     isLoading = true;
 
+
+
     constructor(private adminService: AdminService) { }
 
     ngOnInit() {
@@ -40,8 +42,9 @@ export class DashboardComponent implements OnInit {
                 this.stats.totalHotels = data.hotels.length;
                 this.stats.totalRooms = data.rooms.length;
 
-                
                 this.processReservations(data.reservations);
+                this.processReservations(data.reservations);
+                // this.processHotelRooms(data.hotels, data.rooms); // Removing Chart Data Processing
 
                 this.isLoading = false;
             },
@@ -52,6 +55,8 @@ export class DashboardComponent implements OnInit {
         });
     }
 
+
+
     private processReservations(reservations: Reservation[]) {
         // Active bookings: status is Confirmed or CheckedIn
         const activeDefaults = ['Confirmed', 'CheckedIn'];
@@ -60,11 +65,10 @@ export class DashboardComponent implements OnInit {
         // Total Revenue: sum of totalAmount
         this.stats.totalRevenue = reservations.reduce((sum, r) => sum + r.totalAmount, 0);
 
-        
-      
+        // Recent Activity
         this.recentReservations = [...reservations]
             .sort((a, b) => b.id - a.id)
-            .slice(0, 5);
+
     }
 }
 

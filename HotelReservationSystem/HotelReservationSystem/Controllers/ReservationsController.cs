@@ -116,6 +116,14 @@ public class ReservationsController : ControllerBase
         return Ok(reservations);
     }
 
+    [HttpGet("hotel/{hotelId}")]
+    [Authorize(Roles = "Admin,HotelManager,Receptionist")]
+    public async Task<IActionResult> GetReservationsByHotel(int hotelId)
+    {
+        var reservations = await _reservationService.GetReservationsByHotelAsync(hotelId);
+        return Ok(reservations);
+    }
+
     [HttpGet("date-range")]
     [Authorize(Roles = "Admin,HotelManager,Receptionist")]
     public async Task<IActionResult> GetReservationsByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)

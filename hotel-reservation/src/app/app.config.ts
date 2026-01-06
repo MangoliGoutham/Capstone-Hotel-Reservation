@@ -10,6 +10,8 @@ import { jwtInterceptor } from './auth/interceptors/jwt.interceptor';
 
 registerLocaleData(localeIn);
 
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -17,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([jwtInterceptor])),
     provideAnimationsAsync(),
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'INR' },
-    { provide: LOCALE_ID, useValue: 'en-IN' }
+    { provide: LOCALE_ID, useValue: 'en-IN' },
+    provideCharts(withDefaultRegisterables())
   ]
 };

@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
     selector: 'app-my-bookings',
@@ -179,7 +181,81 @@ export class MyBookingsComponent implements OnInit {
     }
 
     downloadInvoice(res: Reservation) {
-        this.notificationService.show(`Downloading invoice for Reservation #${res.reservationNumber}... (Feature mock)`);
+        this.notificationService.show('Generating invoice...', 'info');
+
+        this.billService.getBillByReservation(res.id).subscribe({
+            next: (bill) => {
+                const doc = new jsPDF();
+
+                // Branding
+                doc.setFontSize(22);
+                doc.setTextColor(79, 70, 229); // Primary Color
+                doc.text('Hotel Reservation System', 14, 20);
+
+                doc.setFontSize(12);
+                doc.setTextColor(100);
+                doc.text('123 Luxury Avenue, Metropolis', 14, 28);
+                doc.text('support@hotelreservation.com', 14, 34);
+
+                // Invoice Title & Info
+                doc.setFontSize(18);
+                doc.setTextColor(0);
+                doc.text('INVOICE', 140, 20);
+
+                doc.setFontSize(10);
+                doc.text(`Invoice #: ${bill.billNumber || 'INV-' + bill.id}`, 140, 28);
+                doc.text(`Date: ${new Date().toLocaleDateString()}`, 140, 34);
+                doc.text(`Status: ${bill.paymentStatus}`, 140, 40);
+
+                // Guest Details
+                doc.line(14, 45, 196, 45); // Horizontal Line
+                doc.setFontSize(12);
+                doc.text('Bill To:', 14, 55);
+                doc.setFontSize(10);
+                doc.text(`Guest: ${res.userName}`, 14, 62);
+                doc.text(`Reservation #: ${res.reservationNumber}`, 14, 68);
+                doc.text(`Hotel: ${res.hotelName}`, 14, 74);
+                doc.text(`Stay: ${new Date(res.checkInDate).toLocaleDateString()} - ${new Date(res.checkOutDate).toLocaleDateString()}`, 14, 80);
+
+                // Table Items
+                const tableBody = [
+                    ['Room Charges', `Accommodation (${this.getNightCount(res)} Nights)`, `₹${bill.roomCharges.toFixed(2)}`],
+                    ['Taxes', '10% GST', `₹${bill.taxAmount.toFixed(2)}`],
+                    ['Additional Charges', '-', `₹${bill.additionalCharges.toFixed(2)}`]
+                ];
+
+                autoTable(doc, {
+                    startY: 90,
+                    head: [['Description', 'Details', 'Amount']],
+                    body: tableBody,
+                    theme: 'grid',
+                    headStyles: { fillColor: [79, 70, 229] },
+                    foot: [['', 'Total', `₹${bill.totalAmount.toFixed(2)}`]],
+                    footStyles: { fillColor: [241, 245, 249], textColor: [0, 0, 0], fontStyle: 'bold' }
+                });
+
+                // Footer
+                const finalY = (doc as any).lastAutoTable.finalY + 20;
+                doc.setFontSize(10);
+                doc.setTextColor(150);
+                doc.text('Thank you for choosing Hotel Reservation System!', 105, finalY, { align: 'center' });
+
+                // Download
+                doc.save(`Invoice_${res.reservationNumber}.pdf`);
+                this.notificationService.show('Invoice downloaded successfully', 'success');
+            },
+            error: (err) => {
+                console.error(err);
+                this.notificationService.show('Could not fetch invoice details.', 'error');
+            }
+        });
+    }
+
+    private getNightCount(res: Reservation): number {
+        const start = new Date(res.checkInDate);
+        const end = new Date(res.checkOutDate);
+        const diff = Math.abs(end.getTime() - start.getTime());
+        return Math.ceil(diff / (1000 * 60 * 60 * 24)) || 1;
     }
 
     // Payment Logic integrated from previous file

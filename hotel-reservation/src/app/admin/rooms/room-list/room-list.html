@@ -37,7 +37,7 @@
                 <!-- Price Column -->
                 <ng-container matColumnDef="price">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
-                    <td mat-cell *matCellDef="let room"> ${{room.basePrice}} </td>
+                    <td mat-cell *matCellDef="let room"> {{room.basePrice | currency}} </td>
                 </ng-container>
 
                 <!-- Status Column -->

@@ -250,3 +250,29 @@
 .quick-btn mat-icon {
     margin-right: 1rem;
 }
+
+/* Charts Card */
+.charts-card {
+    height: 100%;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 350px;
+    /* Increased height */
+    width: 100%;
+    /* Removed flex to let Chart.js handle responsiveness naturally */
+}
+
+@media (min-width: 1200px) {
+    .charts-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

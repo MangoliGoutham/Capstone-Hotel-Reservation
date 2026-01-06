@@ -19,7 +19,7 @@
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false"
         [fixedInViewport]="(isHandset$ | async) === true" [fixedTopGap]="(isHandset$ | async) ? 56 : 0">
         <mat-toolbar color="primary" *ngIf="false">
-          
+
         </mat-toolbar>
         <!-- Sidebar Header/Brand -->
         <div class="sidebar-header"
@@ -28,12 +28,13 @@
         </div>
 
         <mat-nav-list>
-            <!-- Only Admin sees Dashboard -->
-            <a *ngIf="isAdmin" routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item"
+            <!-- Manager Dashboard -->
+            <a *ngIf="isManager" routerLink="/staff/dashboard" routerLinkActive="active" class="nav-item"
                 (click)="onLinkClick(drawer)">
                 <mat-icon class="icon">dashboard</mat-icon>
                 <span>Dashboard</span>
             </a>
+
             <!-- Only Admin sees Manage Hotels -->
             <a *ngIf="isAdmin" routerLink="/admin/hotels" routerLinkActive="active" class="nav-item"
                 (click)="onLinkClick(drawer)">

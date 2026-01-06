@@ -38,7 +38,8 @@ public class AuthService : IAuthService
             Role = user.Role,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Email = user.Email
+            Email = user.Email,
+            HotelId = user.HotelId
         };
     }
 
@@ -69,7 +70,8 @@ public class AuthService : IAuthService
             Role = user.Role,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Email = user.Email
+            Email = user.Email,
+            HotelId = user.HotelId
         };
     }
 }

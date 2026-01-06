@@ -43,9 +43,7 @@ export class AdminService {
         return this.http.get<Room>(`${this.apiUrl}/rooms/${id}`);
     }
 
-    getRoomsByHotel(hotelId: number): Observable<Room[]> {
-        return this.http.get<Room[]>(`${this.apiUrl}/rooms/hotel/${hotelId}`);
-    }
+
 
     createRoom(room: CreateRoomDto): Observable<Room> {
         return this.http.post<Room>(`${this.apiUrl}/rooms`, room);
@@ -76,7 +74,13 @@ export class AdminService {
         return this.http.get<Reservation[]>(`${this.apiUrl}/reservations`);
     }
 
+    getRoomsByHotel(hotelId: number): Observable<Room[]> {
+        console.log(`Calling API: ${this.apiUrl}/rooms/hotel/${hotelId}`);
+        return this.http.get<Room[]>(`${this.apiUrl}/rooms/hotel/${hotelId}`);
+    }
+
     getReservationsByHotel(hotelId: number): Observable<Reservation[]> {
+        console.log(`Calling API: ${this.apiUrl}/reservations/hotel/${hotelId}`);
         return this.http.get<Reservation[]>(`${this.apiUrl}/reservations/hotel/${hotelId}`);
     }
 

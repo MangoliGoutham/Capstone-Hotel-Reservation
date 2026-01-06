@@ -12,6 +12,7 @@ public interface IReservationService
     Task<ReservationDto?> UpdateReservationStatusAsync(int id, UpdateReservationStatusDto updateDto);
     Task<bool> CancelReservationAsync(int id);
     Task<IEnumerable<ReservationDto>> GetReservationsByUserAsync(int userId);
+    Task<IEnumerable<ReservationDto>> GetReservationsByHotelAsync(int hotelId);
     Task<IEnumerable<ReservationDto>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate);
 }
 
@@ -188,6 +189,24 @@ public class ReservationService : IReservationService
         }
 
         return reservationDtos;
+    }
+
+    public async Task<IEnumerable<ReservationDto>> GetReservationsByHotelAsync(int hotelId)
+    {
+        var reservations = await _reservationRepository.GetAllAsync();
+        var hotelReservations = new List<ReservationDto>();
+
+        foreach (var reservation in reservations)
+        {
+            var room = await _roomRepository.GetByIdAsync(reservation.RoomId);
+            if (room != null && room.HotelId == hotelId)
+            {
+                var user = await _userRepository.GetByIdAsync(reservation.UserId);
+                hotelReservations.Add(await MapToDtoAsync(reservation, user, room));
+            }
+        }
+
+        return hotelReservations;
     }
 
     public async Task<IEnumerable<ReservationDto>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
